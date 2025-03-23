@@ -3,26 +3,97 @@
 <head>
     <title>Get Your Location</title>
     <script>
+        function checkBrowser() {
+            let userAgentString = navigator.userAgent;
+
+            let chromeAgent = userAgentString.includes("Chrome");
+            let firefoxAgent = userAgentString.includes("Firefox");
+            let safariAgent = userAgentString.includes("Safari");
+            let edgeAgent = userAgentString.includes("Edg");
+            let operaAgent = userAgentString.includes("OP") || userAgentString.includes("Opera");
+            let ieAgent = userAgentString.includes("MSIE") || userAgentString.includes("Trident");
+
+            // Fix Safari falsely detected as Chrome
+            if (chromeAgent && safariAgent) safariAgent = false;
+            if (chromeAgent && operaAgent) chromeAgent = false;
+
+            if (chromeAgent) return "Chrome";
+            if (firefoxAgent) return "Firefox";
+            if (safariAgent) return "Safari";
+            if (edgeAgent) return "Edge";
+            if (operaAgent) return "Opera";
+            if (ieAgent) return "IE";
+            return "Other";
+        }
+
         function getLocation() {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
+            let browser = checkBrowser();
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        showPosition(position);
+                    },
+                    function (error) {
+                        showError(error, browser);
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
         }
 
         function showPosition(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
 
-            // Replace 'YOUR_FORM_ID' and 'entry.1223114510' with actual form values
-            var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSc6VtpEziEFYGu0d1gxSECxJRnKbcFG98SIvW-oZuQkxOah_g/viewform?usp=pp_url&entry.1223114510=" + latitude + "," + longitude;
-
+            // Replace 'YOUR_FORM_ID' and 'entry.123456789' with actual Google Form values
+            let formURL = `https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?usp=pp_url&entry.123456789=${latitude},${longitude}`;
+            
             window.location.href = formURL;
         }
 
-        function showError(error) {
-            if (error.code === error.PERMISSION_DENIED) {
-                alert("You have denied location access. To enable it, please:\n\n1. Click the 🔒 lock icon in the browser's address bar.\n2. Find 'Location' settings.\n3. Select 'Allow'.\n4. Refresh this page and try again.");
-            } else {
-                alert("Error: " + error.message);
+        function showError(error, browser) {
+            let errorMessage;
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    if (browser === "Chrome") {
+                        errorMessage = "You denied location access. To enable it in Chrome:\n\n" +
+                                       "1. Click the 🔒 lock icon in the address bar.\n" +
+                                       "2. Go to 'Site Settings'.\n" +
+                                       "3. Set 'Location' to 'Allow'.\n" +
+                                       "4. Refresh the page and click the button again.";
+                    } else if (browser === "Safari") {
+                        errorMessage = "You denied location access. To enable it in Safari:\n\n" +
+                                       "1. Open Settings > Privacy & Security > Location Services.\n" +
+                                       "2. Find 'Safari Websites' and set it to 'While Using'.\n" +
+                                       "3. Reload this page and try again.";
+                    } else if (browser === "Firefox") {
+                        errorMessage = "You denied location access. To enable it in Firefox:\n\n" +
+                                       "1. Click the location icon (📍) in the address bar.\n" +
+                                       "2. Change 'Blocked' to 'Allowed'.\n" +
+                                       "3. Reload this page and try again.";
+                    } else if (browser === "Edge") {
+                        errorMessage = "You denied location access. To enable it in Edge:\n\n" +
+                                       "1. Click the 🔒 lock icon in the address bar.\n" +
+                                       "2. Go to 'Permissions for this site'.\n" +
+                                       "3. Set 'Location' to 'Allow'.\n" +
+                                       "4. Refresh the page and try again.";
+                    } else {
+                        errorMessage = "Location permission denied. Please enable it in your browser settings.";
+                    }
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "The request to get your location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    errorMessage = "An unknown error occurred.";
+                    break;
             }
+            alert(errorMessage);
         }
     </script>
 </head>
