@@ -4,11 +4,7 @@
     <title>Get Your Location</title>
     <script>
         function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
         }
 
         function showPosition(position) {
@@ -18,24 +14,14 @@
             // Replace 'YOUR_FORM_ID' and 'entry.1223114510' with actual form values
             var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSc6VtpEziEFYGu0d1gxSECxJRnKbcFG98SIvW-oZuQkxOah_g/viewform?usp=pp_url&entry.1223114510=" + latitude + "," + longitude;
 
-            // Redirect to Google Form with auto-filled location
             window.location.href = formURL;
         }
 
         function showError(error) {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.");
-                    break;
+            if (error.code === error.PERMISSION_DENIED) {
+                alert("You have denied location access. To enable it, please:\n\n1. Click the 🔒 lock icon in the browser's address bar.\n2. Find 'Location' settings.\n3. Select 'Allow'.\n4. Refresh this page and try again.");
+            } else {
+                alert("Error: " + error.message);
             }
         }
     </script>
