@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Get Location</title>
+    <title>Get Your Location</title>
     <script>
         function getLocation() {
             if (navigator.geolocation) {
@@ -15,10 +15,10 @@
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
 
-            // Replace 'your-form-ID' and 'entry.123456789' with actual form values
+            // Replace 'YOUR_FORM_ID' and 'entry.1223114510' with actual form values
             var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSc6VtpEziEFYGu0d1gxSECxJRnKbcFG98SIvW-oZuQkxOah_g/viewform?usp=pp_url&entry.1223114510=" + latitude + "," + longitude;
 
-            // Redirect to the Google Form with location pre-filled
+            // Redirect to Google Form with auto-filled location
             window.location.href = formURL;
         }
 
@@ -40,7 +40,8 @@
         }
     </script>
 </head>
-<body onload="getLocation()">
-    <h2>Getting your location...</h2>
+<body>
+    <h2>Click the button below to get your location</h2>
+    <button onclick="getLocation()">Get Location</button>
 </body>
 </html>
