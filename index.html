@@ -5,24 +5,21 @@
     <script>
         function checkBrowser() {
             let userAgentString = navigator.userAgent;
+            
+            let isChrome = userAgentString.includes("Chrome") && !userAgentString.includes("Edg") && !userAgentString.includes("OP") && !userAgentString.includes("CriOS");
+            let isFirefox = userAgentString.includes("Firefox");
+            let isSafari = userAgentString.includes("Safari") && !userAgentString.includes("Chrome") && !userAgentString.includes("CriOS");
+            let isEdge = userAgentString.includes("Edg");
+            let isOpera = userAgentString.includes("OP") || userAgentString.includes("Opera");
+            let isIE = userAgentString.includes("MSIE") || userAgentString.includes("Trident");
 
-            let chromeAgent = userAgentString.includes("Chrome");
-            let firefoxAgent = userAgentString.includes("Firefox");
-            let safariAgent = userAgentString.includes("Safari");
-            let edgeAgent = userAgentString.includes("Edg");
-            let operaAgent = userAgentString.includes("OP") || userAgentString.includes("Opera");
-            let ieAgent = userAgentString.includes("MSIE") || userAgentString.includes("Trident");
-
-            // Fix Safari falsely detected as Chrome
-            if (chromeAgent && safariAgent) safariAgent = false;
-            if (chromeAgent && operaAgent) chromeAgent = false;
-
-            if (chromeAgent) return "Chrome";
-            if (firefoxAgent) return "Firefox";
-            if (safariAgent) return "Safari";
-            if (edgeAgent) return "Edge";
-            if (operaAgent) return "Opera";
-            if (ieAgent) return "IE";
+            if (isChrome) return "Chrome";
+            if (isFirefox) return "Firefox";
+            if (isSafari) return "Safari";
+            if (isEdge) return "Edge";
+            if (isOpera) return "Opera";
+            if (isIE) return "IE";
+            
             return "Other";
         }
 
@@ -47,8 +44,8 @@
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
 
-            // Replace 'YOUR_FORM_ID' and 'entry.123456789' with actual Google Form values
-            let formURL = `https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?usp=pp_url&entry.123456789=${latitude},${longitude}`;
+            // Your Google Form link with actual location
+            let formURL = `https://docs.google.com/forms/d/e/1FAIpQLSc6VtpEziEFYGu0d1gxSECxJRnKbcFG98SIvW-oZuQkxOah_g/viewform?usp=pp_url&entry.1223114510=${latitude},${longitude}`;
             
             window.location.href = formURL;
         }
