@@ -4,24 +4,29 @@
     <title>Get Your Location</title>
     <script>
         function checkBrowser() {
-            let userAgentString = navigator.userAgent;
-            
-            let isChrome = userAgentString.includes("Chrome") && !userAgentString.includes("Edg") && !userAgentString.includes("OP") && !userAgentString.includes("CriOS");
-            let isFirefox = userAgentString.includes("Firefox");
-            let isSafari = userAgentString.includes("Safari") && !userAgentString.includes("Chrome") && !userAgentString.includes("CriOS");
-            let isEdge = userAgentString.includes("Edg");
-            let isOpera = userAgentString.includes("OP") || userAgentString.includes("Opera");
-            let isIE = userAgentString.includes("MSIE") || userAgentString.includes("Trident");
+    let userAgentString = navigator.userAgent;
 
-            if (isChrome) return "Chrome";
-            if (isFirefox) return "Firefox";
-            if (isSafari) return "Safari";
-            if (isEdge) return "Edge";
-            if (isOpera) return "Opera";
-            if (isIE) return "IE";
-            
-            return "Other";
-        }
+    let isChrome = userAgentString.includes("Chrome") && !userAgentString.includes("Edg") && !userAgentString.includes("OP") && !userAgentString.includes("CriOS");
+    let isFirefox = userAgentString.includes("Firefox");
+    let isSafari = userAgentString.includes("Safari") && !userAgentString.includes("Chrome") && !userAgentString.includes("CriOS");
+    let isEdge = userAgentString.includes("Edg");
+    let isOpera = userAgentString.includes("OP") || userAgentString.includes("Opera");
+    let isIE = userAgentString.includes("MSIE") || userAgentString.includes("Trident");
+
+    // Detect Chrome on iPhone (iOS)
+    let isChromeiOS = userAgentString.includes("CriOS");
+
+    if (isChrome) return "Chrome";
+    if (isFirefox) return "Firefox";
+    if (isSafari) return "Safari";
+    if (isChromeiOS) return "Chrome on iPhone";
+    if (isEdge) return "Edge";
+    if (isOpera) return "Opera";
+    if (isIE) return "IE";
+
+    return "Other";
+}
+
 
         function getLocation() {
             let browser = checkBrowser();
